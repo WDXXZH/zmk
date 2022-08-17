@@ -11,20 +11,18 @@
 #include <dt-bindings/zmk/rgb.h> //允许在keymap中使用&rgb_ug按键(即通过键盘控制rgb灯效)  详见：https://zmk.dev/docs/behaviors/underglow
 #include <dt-bindings/zmk/backlight.h> //允许在keymap中使用&bl按键(即通过键盘控制背光灯效) 详见：https://zmk.dev/docs/behaviors/backlight
 
-/*
-* 定义键盘layer
-* &mo (启用/禁用的层数)
-* &lt (保持时启用的层数,点击时发送的键码,例：&lt LOWER SPACE，长按启用LOWER，点击输出SPACE)
-* &to (要启用的层数)
-* &tog(启用/禁用的层数,启用图层，直到手动禁用图层)  不懂，不用
-* 详见：https://zmk.dev/docs/behaviors/layers
-*/
-#define DEFAULT 0
-#define LOWER 1
-#define RAISE 2  
+
+//定义键盘layer
+//&mo (启用/禁用的层数)
+// &lt (保持时启用的层数,点击时发送的键码,例：&lt LOWER SPACE，长按启用LOWER，点击输出SPACE)
+//&to (要启用的层数)
+//&tog(启用/禁用的层数,启用图层，直到手动禁用图层)  不懂，不用
+//详见：https://zmk.dev/docs/behaviors/layers
+
+ 
 
 
-/ {
+/  {
     combos{
         compatible = "zmk,combos";
         combo_dsklg {
@@ -53,20 +51,19 @@
             & kp ESC    & kp N1 & kp N2 & kp N3   & kp N4    & kp N5                               & kp N6   & kp N7    & kp N8    & kp N9  & kp N0   & kp LBKT
             & kp TAB    & kp Q  & kp W  & kp E    & kp R     & kp T                                & kp Y    & kp U     & kp I     & kp O   & kp P    & kp RBKT
             & kp CAPS   & kp A  & kp S  & kp D    & kp F     & kp G                                & kp H    & kp J     & kp K     & kp L   & kp SEMI & kp SQT
-            & kp LSHIFT & kp Z  & kp X  & kp C    & kp V     & kp B     & to RAISE     & to LOWER  & kp N    & kp M     & kp COMMA & kp DOT & kp FSLH & kp BSLH
+            & kp LSHIFT & kp Z  & kp X  & kp C    & kp V     & kp B     & to 2         & to 1      & kp N    & kp M     & kp COMMA & kp DOT & kp FSLH & kp BSLH
                                         & kp DEL  & kp LALT  & kp SPACE & kp RET       & kp BSPC   & kp INS & RCTRL & kp RGUI
             >;
 
             sensor - bindings = <&inc_dec_kp C_VOL_DN C_VOL_UP >;
         };
-        //\|;-_;=+;
 
         //LOWER_LAYER F区、小键盘、方向键、剩余符号、功能键
         lower_layer {
 
             // ------------------------------------------------------------------------------------------------------------
             // |  F11 |  F1 |  F2 |  F3  |  F4  |  F5  |                 |  F6  |  F7 | F8  |  F9  |  F10  |  F12  |
-            // |PG_UP |     |     |      |      |      |                 |   7  |  8  |  9  |  +   |   (   |  ·~   |
+            // |PG_UP |     |     |      |      |      |                 |   7  |  8  |  9  |  +   |   (   |  ·~  |
             // |PG_DN |     |     |      |  UP  |      |                 |   4  |  5  |  6  |  -   |    )  |   -_  |
             // |LSHIFT|     |     | LEFT | DOWN |RIGHT |  DE  |  |       |   1  |  2  |  3  |  *   |       |   =+  |
             //                    |      |      |      |      |  |   =   |   0  |  .  |  /  |       
@@ -76,7 +73,7 @@
             & kp F11   & kp F1 & kp F2 & kp F3   & kp F4   & kp F5                                 & kp F6    & kp F7    & kp F8    & kp F9          & kp F10     & kp F12
             & kp PG_UP & trans & trans & trans   & trans   & trans                                 & kp KP_N7 & kp KP_N8 & kp KP_N9 & kp KP_PLUS     & kp KP_LPAR & kp GRAVE
             & kp PG_DN & trans & trans & trans   & kp UP   & trans                                 & kp KP_N4 & kp KP_N5 & kp KP_N6 & kp KP_MINUS    & kp KP_RPAR & kp MINUS
-            & kp LSHIFT& trans & trans & kp LEFT & kp DOWN & kp RIGHT & to DEFAULT   & trans       & kp KP_N1 & kp KP_N2 & kp KP_N3 & kp KP_MULTIPLY & trans      & kp EQUAL
+            & kp LSHIFT& trans & trans & kp LEFT & kp DOWN & kp RIGHT & to 0         & trans       & kp KP_N1 & kp KP_N2 & kp KP_N3 & kp KP_MULTIPLY & trans      & kp EQUAL
                                        & trans   & trans   & trans    & trans        & kp KP_EQUAL & kp KP_N0 & kp KP_DOT & kp KP_DIVIDE
             >;
 
@@ -84,50 +81,50 @@
         };
 
         
-        /*
-         *RGB_ON	        打开 RGB 功能
-         *RGB_OFF	        关闭 RGB 功能
-         *RGB_TOG	        打开和关闭 RGB 功能
-         *RGB_HUI	        增加 RGB 功能的色调
-         *RGB_HUD	        降低 RGB 功能的色调
-         *RGB_SAI	        增加 RGB 特征的饱和度
-         *RGB_SAD	        降低 RGB 特征的饱和度
-         *RGB_BRI	        增加 RGB 功能的亮度
-         *RGB_BRD	        降低 RGB 功能的亮度
-         *RGB_SPI	        提高 RGB 特征效果动画的速度
-         *RGB_SPD	        降低 RGB 特征效果动画的速度
-         *RGB_EFF	        向前循环 RGB 功能的效果
-         *RGB_EFR	        循环 RGB 功能的效果反转
-         *RGB_COLOR_HSB	为底辉设置特定的HSB (HSV)值  例：&rgb_ug RGB_COLOR_HSB(128,100,100)   !!!色相值<=360;饱和度<=100;亮度<=100!!!
-         */
+        
+         //RGB_ON	        打开 RGB 功能
+         //RGB_OFF	        关闭 RGB 功能
+         //RGB_TOG	        打开和关闭 RGB 功能
+         //RGB_HUI	        增加 RGB 功能的色调
+         //RGB_HUD	        降低 RGB 功能的色调
+         //RGB_SAI	        增加 RGB 特征的饱和度
+         //RGB_SAD	        降低 RGB 特征的饱和度
+         //RGB_BRI	        增加 RGB 功能的亮度
+         //RGB_BRD	        降低 RGB 功能的亮度
+         //RGB_SPI	        提高 RGB 特征效果动画的速度
+         //RGB_SPD	        降低 RGB 特征效果动画的速度
+         //RGB_EFF	        向前循环 RGB 功能的效果
+         //RGB_EFR	        循环 RGB 功能的效果反转
+         //RGB_COLOR_HSB	为底辉设置特定的HSB (HSV)值  例：&rgb_ug RGB_COLOR_HSB(128,100,100)   !!!色相值<=360;饱和度<=100;亮度<=100!!!
+         
 
-        /*
-         *BT_CLR	清除所选配置文件的键盘和主机之间的绑定信息。
-         *BT_NXT	切换到下一个配置文件，到达终点时循环到第一个配置文件。
-         *BT_PRV	切换到上一个配置文件，到达开头时循环到最后一个配置文件。
-         *BT_SEL	按编号选择索引为 0 的配置文件。请注意：此定义必须在键盘映射中包含一个数字作为参数才能正常工作。例如。BT_SEL 0
-         */
+        
+         //BT_CLR	清除所选配置文件的键盘和主机之间的绑定信息。
+         //BT_NXT	切换到下一个配置文件，到达终点时循环到第一个配置文件。
+         //BT_PRV	切换到上一个配置文件，到达开头时循环到最后一个配置文件。
+         //BT_SEL	按编号选择索引为 0 的配置文件。请注意：此定义必须在键盘映射中包含一个数字作为参数才能正常工作。例如。BT_SEL 0
+         //
 
-        /*
-         *OUT_USB	更喜欢发送到 USB
-         *OUT_BLE	首选发送到当前的蓝牙配置文件
-         *OUT_TOG	在 USB 和 BLE 之间切换
-         */
+        
+         //OUT_USB	更喜欢发送到 USB
+         //OUT_BLE	首选发送到当前的蓝牙配置文件
+         //OUT_TOG	在 USB 和 BLE 之间切换
+         
 
-        /*
-         *&reset 重置键盘并重新运行闪存到设备的固件
-         *&bootloader 重置到引导加载程序模式，可重新刷入固件
-         */
+        
+         //&reset 重置键盘并重新运行闪存到设备的固件
+         //&bootloader 重置到引导加载程序模式，可重新刷入固件
+         
 
-        /*
-         *BL_ON	打开背光
-         *BL_OFF	关闭背光
-         *BL_TOG	打开和关闭背光
-         *BL_INC	增加亮度
-         *BL_DEC	降低亮度
-         *BL_CYCLE	循环亮度
-         *BL_SET	设置特定的亮度
-         */
+        
+         //BL_ON	打开背光
+         //BL_OFF	关闭背光
+         //BL_TOG	打开和关闭背光
+         //BL_INC	增加亮度
+         //BL_DEC	降低亮度
+         //BL_CYCLE	循环亮度
+         //BL_SET	设置特定的亮度
+         
 
         //RAISE_LAYER:灯控+reset键
         raise_layer {
@@ -144,7 +141,7 @@
             & bt BT_CLR      & bt BT_SEL 0    & bt BT_SEL 1    & bt BT_SEL 2    & bt BT_SEL 3    & bt BT_SEL 4                              & out OUT_TOG & out OUT_USB & out OUT_BLE & trans & trans & trans
             & rgb_ug RGB_TOG & rgb_ug RGB_HUI & rgb_ug RGB_HUD & rgb_ug RGB_SAI & rgb_ug RGB_SAD & trans                                    & trans       & trans       & trans       & trans & trans & trans
             & rgb_ug RGB_BRI & rgb_ug RGB_BRD & rgb_ug RGB_SPI & rgb_ug RGB_SPD & rgb_ug RGB_EFF & rgb_ug RGB_EFR                           & trans       & trans       & trans       & trans & trans & trans
-            & bl BL_TOG      & bl BL_INC      & bl BL_DEC      & bl BL_CYCLE    & trans          & trans          & trans      & to DEFAULT & trans       & trans       & trans       & trans & trans & trans
+            & bl BL_TOG      & bl BL_INC      & bl BL_DEC      & bl BL_CYCLE    & trans          & trans          & trans      & to 0       & trans       & trans       & trans       & trans & trans & trans
                                                                & trans          & trans          & trans          & reset      & trans      & trans       & trans       & trans
             >;
 
