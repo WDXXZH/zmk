@@ -1,5 +1,5 @@
 include:
   - board: nrfmicro_13
-    shield: lotus58_left
+    shield: lotu58_left
   - board: nrfmicro_13
-    shield: lotus58_right
+    shield: lotu58_right
